@@ -23,16 +23,9 @@ CREATE TABLE books (
 INSERT INTO categories (id, name) VALUES
 ('software_engineering', 'Software Engineering'),
 ('computer_science', 'Computer Science'),
-('artificial_intelligence', 'Artificial Intelligence', algorithms, machine learning, etc.),
+('artificial_intelligence', 'Artificial Intelligence',algorithms'),
 ('data_science', 'Data Science'),
-('web_development', 'Web Development'),
-('mobile_development', 'Mobile Development'),
-('game_development', 'Game Development'),
-('devops', 'DevOps'),
-('cloud_computing', 'Cloud Computing'),
-('cybersecurity', 'Cybersecurity');
-
-
+('web_development', 'Web Development');
 
 -- Seed Books
 INSERT INTO books (id, title, author, cover_url, b2_key, category_id) VALUES
