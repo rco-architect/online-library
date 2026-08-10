@@ -1,0 +1,24 @@
+# Virtual Environment
+.venv/
+venv/
+ENV/
+env/
+
+# Python Cache & Databases
+__pycache__/
+*.py[cod]
+*$py.class
+*.db
+local_library.db
+
+# Wrangler / Cloudflare Temporary Files
+.wrangler/
+.dev.vars
+
+# Operating System Files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Environment Keys (if any local .env file exists)
+.env

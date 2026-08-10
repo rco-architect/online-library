@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>PDF Reader</title>
+  <style>
+    body {
+      margin: 0;
+      background-color: #0f172a;
+      color: #ffffff;
+      font-family: sans-serif;
+    }
+    .header {
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      background: #1e293b;
+    }
+    a { color: #60a5fa; text-decoration: none; }
+    iframe {
+      width: 100vw;
+      height: calc(100vh - 60px);
+      border: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <a href="../../index.html">&larr; Back to Catalog</a>
+    <span id="book-title">Loading...</span>
+  </div>
+
+  <iframe id="pdf-viewer"></iframe>
+
+  <!-- JS MUST BE WRAPPED IN SCRIPT TAGS BELOW -->
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const book = urlParams.get('book');
+    const WORKER_URL = 'https://b2-pdf-gateway.rco-architect.workers.dev';
+
+    if (book) {
+      document.getElementById('book-title').textContent = book.toUpperCase();
+
+      fetch(`${WORKER_URL}?book=${encodeURIComponent(book)}&_t=${Date.now()}`)
+        .then(response => response.json())
+        .then(data => {
+          if (data.url) {
+            document.getElementById('pdf-viewer').src = data.url;
+          } else {
+            document.body.innerHTML = '<h2 style="padding:2rem;">Access denied or book file missing in B2 bucket.</h2>';
+          }
+        })
+        .catch(err => {
+          console.error('Fetch error:', err);
+          document.body.innerHTML = '<h2 style="padding:2rem;">Failed to connect to gateway worker.</h2>';
+        });
+    }
+  </script>
+</body>
+</html>

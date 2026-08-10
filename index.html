@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Private Tech Library</title>
+  <link rel="stylesheet" href="src/css/style.css">
+  <style>
+    :root {
+      --bg-color: #0d1117;
+      --card-bg: #161b22;
+      --border-color: #30363d;
+      --text-main: #c9d1d9;
+      --accent: #58a6ff;
+    }
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+    header {
+      padding: 2rem 1rem;
+      text-align: center;
+      border-bottom: 1px solid var(--border-color);
+      background-color: var(--card-bg);
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+    }
+    .category-section {
+      margin-bottom: 3rem;
+    }
+    .category-title {
+      font-size: 1.5rem;
+      border-bottom: 2px solid var(--accent);
+      display: inline-block;
+      padding-bottom: 0.25rem;
+      margin-bottom: 1.5rem;
+    }
+    .book-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1.5rem;
+    }
+    .book-card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      overflow: hidden;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+    }
+    .book-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--accent);
+    }
+    .cover-container {
+      width: 100%;
+      height: 280px;
+      background-color: #000;
+      overflow: hidden;
+    }
+    .cover-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .book-info {
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+    .book-title {
+      font-size: 1rem;
+      font-weight: 600;
+      margin: 0 0 0.5rem 0;
+    }
+    .book-author {
+      font-size: 0.85rem;
+      color: #8b949e;
+      margin-bottom: 0.5rem;
+    }
+    .tag {
+      align-self: flex-start;
+      font-size: 0.75rem;
+      background-color: #21262d;
+      color: var(--accent);
+      padding: 2px 8px;
+      border-radius: 12px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Vault Library</h1>
+    <p>Private PDF Reading Portal</p>
+  </header>
+
+  <main class="container">
+
+    <!-- Category 1: Artificial Intelligence -->
+    <section class="category-section">
+  <h2 class="category-title">Software Engineering</h2>
+  <div class="book-grid">
+
+    <a href="src/pages/reader.html?book=clean_code" class="book-card">
+      <div class="cover-container">
+        <img src="public/covers/clean_code.jpg" alt="Clean Code Cover">
+      </div>
+      <div class="book-info">
+        <h3 class="book-title">Clean Code</h3>
+        <span class="book-author">Robert C. Martin</span>
+        <span class="tag">Software Craftsmanship</span>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+    <!-- Category 2: Software & System Architecture -->
+    <section class="category-section">
+      <h2 class="category-title">System Architecture & Web</h2>
+      <div class="book-grid">
+
+        <a href="src/pages/reader.html?book=webmaster" class="book-card">
+          <div class="cover-container">
+            <img src="public/covers/webmaster.jpg" alt="Webmaster Roadmap Cover">
+          </div>
+          <div class="book-info">
+            <h3 class="book-title">Fullstack Webmaster Guide</h3>
+            <span class="book-author">Engineering Vault</span>
+            <span class="tag">Web Dev</span>
+          </div>
+        </a>
+
+        <a href="src/pages/reader.html?book=system-design" class="book-card">
+          <div class="cover-container">
+            <img src="public/covers/system-design.jpg" alt="System Design Cover">
+          </div>
+          <div class="book-info">
+            <h3 class="book-title">System Design & Cloud Storage</h3>
+            <span class="book-author">Cloud Infrastructure</span>
+            <span class="tag">Architecture</span>
+          </div>
+        </a>
+
+      </div>
+    </section>
+
+  </main>
+
+</body>
+</html>
