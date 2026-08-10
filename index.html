@@ -11,16 +11,14 @@
       --text-main: #f8fafc;
       --text-muted: #94a3b8;
       --accent: #38bdf8;
-      --accent-hover: #0284c7;
     }
 
     body {
       margin: 0;
       padding: 0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      font-family: system-ui, -apple-system, sans-serif;
       background-color: var(--bg-color);
       color: var(--text-main);
-      min-height: 100vh;
     }
 
     header {
@@ -28,22 +26,44 @@
       backdrop-filter: blur(8px);
       padding: 1.5rem 2rem;
       border-bottom: 1px solid #334155;
-      position: sticky;
-      top: 0;
-      z-index: 10;
     }
 
     header h1 {
       margin: 0;
       font-size: 1.5rem;
       color: var(--accent);
-      letter-spacing: -0.025em;
     }
 
     main {
       max-width: 1200px;
       margin: 0 auto;
       padding: 2rem;
+    }
+
+    /* Category Filter Bar */
+    .filter-bar {
+      display: flex;
+      gap: 0.75rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      background: #1e293b;
+      color: var(--text-muted);
+      border: 1px solid #334155;
+      padding: 8px 16px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: all 0.2s ease;
+    }
+
+    .filter-btn:hover, .filter-btn.active {
+      background: var(--accent);
+      color: #0f172a;
+      border-color: var(--accent);
+      font-weight: bold;
     }
 
     .catalog-grid {
@@ -57,15 +77,12 @@
       border-radius: 12px;
       overflow: hidden;
       border: 1px solid #334155;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
       cursor: pointer;
-      display: flex;
-      flex-direction: column;
+      transition: transform 0.2s ease;
     }
 
     .book-card:hover {
       transform: translateY(-4px);
-      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5);
       border-color: var(--accent);
     }
 
@@ -73,7 +90,6 @@
       width: 100%;
       height: 280px;
       background-color: #334155;
-      overflow: hidden;
     }
 
     .cover-container img {
@@ -84,34 +100,26 @@
 
     .book-info {
       padding: 1rem;
-      display: flex;
-      flex-direction: column;
-      flex-grow: 1;
     }
 
     .book-info h3 {
       margin: 0 0 0.5rem 0;
       font-size: 1.1rem;
-      line-height: 1.3;
-      color: var(--text-main);
     }
 
     .book-info p {
-      margin: 0;
+      margin: 0 0 0.5rem 0;
       font-size: 0.9rem;
       color: var(--text-muted);
     }
 
-    .status-msg {
-      grid-column: 1 / -1;
-      text-align: center;
-      padding: 4rem 1rem;
-      color: var(--text-muted);
-      font-size: 1.1rem;
-    }
-
-    .error-msg {
-      color: #f87171;
+    .category-badge {
+      display: inline-block;
+      background: #334155;
+      color: var(--accent);
+      font-size: 0.75rem;
+      padding: 2px 8px;
+      border-radius: 4px;
     }
   </style>
 </head>
@@ -122,67 +130,95 @@
   </header>
 
   <main>
+    <!-- Category Filter Bar -->
+    <div id="filter-bar" class="filter-bar">
+      <button class="filter-btn active" onclick="filterCategory('all', this)">All</button>
+    </div>
+
+    <!-- Catalog Grid -->
     <div id="catalog" class="catalog-grid">
-      <div class="status-msg">Loading books from database...</div>
+      <div style="grid-column: 1/-1; text-align: center; color: #94a3b8;">Loading catalog...</div>
     </div>
   </main>
 
   <script>
-    const API_URL = 'https://b2-pdf-gateway.rco-architect.workers.dev/api/books';
+    const BASE_WORKER_URL = 'https://b2-pdf-gateway.rco-architect.workers.dev';
+    let allBooks = [];
 
-    async function loadCatalog() {
-      const catalogElement = document.getElementById('catalog');
-
+    async function initLibrary() {
       try {
-        const response = await fetch(API_URL);
-        
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
+        // Fetch categories and books simultaneously
+        const [catRes, bookRes] = await Promise.all([
+          fetch(`${BASE_WORKER_URL}/api/categories`),
+          fetch(`${BASE_WORKER_URL}/api/books`)
+        ]);
 
-        const books = await response.json();
+        const categories = await catRes.json();
+        allBooks = await bookRes.json();
 
-        if (!Array.isArray(books) || books.length === 0) {
-          catalogElement.innerHTML = '<div class="status-msg">No books currently available in the database.</div>';
-          return;
-        }
-
-        catalogElement.innerHTML = '';
-
-        books.forEach(book => {
-          const card = document.createElement('div');
-          card.className = 'book-card';
-          
-          // Redirect to reader page passing the b2_key parameter
-          card.onclick = () => {
-            window.location.href = `src/pages/reader?book=${encodeURIComponent(book.b2_key)}`;
-          };
-
-          card.innerHTML = `
-            <div class="cover-container">
-              <img src="${book.cover_url}" alt="${book.title}" loading="lazy" onerror="this.src='https://via.placeholder.com/200x280?text=No+Cover'">
-            </div>
-            <div class="book-info">
-              <h3>${book.title}</h3>
-              <p>By ${book.author}</p>
-            </div>
-          `;
-
-          catalogElement.appendChild(card);
-        });
-
+        renderCategories(categories);
+        renderBooks(allBooks);
       } catch (err) {
-        console.error('Failed to fetch database records:', err);
-        catalogElement.innerHTML = `
-          <div class="status-msg error-msg">
-            Failed to load library catalog.<br>
-            <small style="color: #94a3b8; font-size: 0.85rem;">Ensure Cloudflare D1 binding "DB" is attached to the Worker.</small>
-          </div>
-        `;
+        console.error('Error loading library:', err);
       }
     }
 
-    document.addEventListener('DOMContentLoaded', loadCatalog);
+    function renderCategories(categories) {
+      const filterBar = document.getElementById('filter-bar');
+      categories.forEach(cat => {
+        const btn = document.createElement('button');
+        btn.className = 'filter-btn';
+        btn.textContent = cat.name;
+        btn.onclick = () => filterCategory(cat.id, btn);
+        filterBar.appendChild(btn);
+      });
+    }
+
+    function renderBooks(books) {
+      const catalog = document.getElementById('catalog');
+      catalog.innerHTML = '';
+
+      if (books.length === 0) {
+        catalog.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: #94a3b8;">No books found in this category.</div>';
+        return;
+      }
+
+      books.forEach(book => {
+        const card = document.createElement('div');
+        card.className = 'book-card';
+        card.onclick = () => {
+          window.location.href = `src/pages/reader?book=${encodeURIComponent(book.b2_key)}`;
+        };
+
+        card.innerHTML = `
+          <div class="cover-container">
+            <img src="${book.cover_url}" alt="${book.title}" onerror="this.src='https://via.placeholder.com/200x280?text=No+Cover'">
+          </div>
+          <div class="book-info">
+            <h3>${book.title}</h3>
+            <p>By ${book.author}</p>
+            <span class="category-badge">${book.category_name || 'Uncategorized'}</span>
+          </div>
+        `;
+        catalog.appendChild(card);
+      });
+    }
+
+    function filterCategory(catId, btnElement) {
+      // Toggle active button style
+      document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+      btnElement.classList.add('active');
+
+      // Filter books
+      if (catId === 'all') {
+        renderBooks(allBooks);
+      } else {
+        const filtered = allBooks.filter(book => book.category_id === catId);
+        renderBooks(filtered);
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', initLibrary);
   </script>
 </body>
 </html>
