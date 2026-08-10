@@ -3,160 +3,186 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Private Tech Library</title>
-  <link rel="stylesheet" href="src/css/style.css">
+  <title>Course Vault & Library</title>
   <style>
     :root {
-      --bg-color: #0d1117;
-      --card-bg: #161b22;
-      --border-color: #30363d;
-      --text-main: #c9d1d9;
-      --accent: #58a6ff;
+      --bg-color: #0f172a;
+      --card-bg: #1e293b;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-hover: #0284c7;
     }
+
     body {
       margin: 0;
       padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
       background-color: var(--bg-color);
       color: var(--text-main);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      min-height: 100vh;
     }
+
     header {
-      padding: 2rem 1rem;
-      text-align: center;
-      border-bottom: 1px solid var(--border-color);
-      background-color: var(--card-bg);
+      background-color: rgba(30, 41, 59, 0.8);
+      backdrop-filter: blur(8px);
+      padding: 1.5rem 2rem;
+      border-bottom: 1px solid #334155;
+      position: sticky;
+      top: 0;
+      z-index: 10;
     }
-    .container {
+
+    header h1 {
+      margin: 0;
+      font-size: 1.5rem;
+      color: var(--accent);
+      letter-spacing: -0.025em;
+    }
+
+    main {
       max-width: 1200px;
       margin: 0 auto;
-      padding: 2rem 1rem;
+      padding: 2rem;
     }
-    .category-section {
-      margin-bottom: 3rem;
-    }
-    .category-title {
-      font-size: 1.5rem;
-      border-bottom: 2px solid var(--accent);
-      display: inline-block;
-      padding-bottom: 0.25rem;
-      margin-bottom: 1.5rem;
-    }
-    .book-grid {
+
+    .catalog-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 1.5rem;
+      gap: 2rem;
     }
+
     .book-card {
       background-color: var(--card-bg);
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
+      border-radius: 12px;
       overflow: hidden;
-      transition: transform 0.2s ease, border-color 0.2s ease;
-      text-decoration: none;
-      color: inherit;
+      border: 1px solid #334155;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      cursor: pointer;
       display: flex;
       flex-direction: column;
     }
+
     .book-card:hover {
       transform: translateY(-4px);
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5);
       border-color: var(--accent);
     }
+
     .cover-container {
       width: 100%;
       height: 280px;
-      background-color: #000;
+      background-color: #334155;
       overflow: hidden;
     }
+
     .cover-container img {
       width: 100%;
       height: 100%;
       object-fit: cover;
     }
+
     .book-info {
       padding: 1rem;
       display: flex;
       flex-direction: column;
       flex-grow: 1;
     }
-    .book-title {
-      font-size: 1rem;
-      font-weight: 600;
+
+    .book-info h3 {
       margin: 0 0 0.5rem 0;
+      font-size: 1.1rem;
+      line-height: 1.3;
+      color: var(--text-main);
     }
-    .book-author {
-      font-size: 0.85rem;
-      color: #8b949e;
-      margin-bottom: 0.5rem;
+
+    .book-info p {
+      margin: 0;
+      font-size: 0.9rem;
+      color: var(--text-muted);
     }
-    .tag {
-      align-self: flex-start;
-      font-size: 0.75rem;
-      background-color: #21262d;
-      color: var(--accent);
-      padding: 2px 8px;
-      border-radius: 12px;
+
+    .status-msg {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 4rem 1rem;
+      color: var(--text-muted);
+      font-size: 1.1rem;
+    }
+
+    .error-msg {
+      color: #f87171;
     }
   </style>
 </head>
 <body>
 
   <header>
-    <h1>Vault Library</h1>
-    <p>Private PDF Reading Portal</p>
+    <h1>Online Library Vault</h1>
   </header>
 
-  <main class="container">
-
-    <!-- Category 1: Artificial Intelligence -->
-    <section class="category-section">
-  <h2 class="category-title">Software Engineering</h2>
-  <div class="book-grid">
-
-    <a href="src/pages/reader.html?book=clean_code" class="book-card">
-      <div class="cover-container">
-        <img src="public/covers/clean_code.jpg" alt="Clean Code Cover">
-      </div>
-      <div class="book-info">
-        <h3 class="book-title">Clean Code</h3>
-        <span class="book-author">Robert C. Martin</span>
-        <span class="tag">Software Craftsmanship</span>
-      </div>
-    </a>
-
-  </div>
-</section>
-
-    <!-- Category 2: Software & System Architecture -->
-    <section class="category-section">
-      <h2 class="category-title">System Architecture & Web</h2>
-      <div class="book-grid">
-
-        <a href="src/pages/reader.html?book=webmaster" class="book-card">
-          <div class="cover-container">
-            <img src="public/covers/webmaster.jpg" alt="Webmaster Roadmap Cover">
-          </div>
-          <div class="book-info">
-            <h3 class="book-title">Fullstack Webmaster Guide</h3>
-            <span class="book-author">Engineering Vault</span>
-            <span class="tag">Web Dev</span>
-          </div>
-        </a>
-
-        <a href="src/pages/reader.html?book=system-design" class="book-card">
-          <div class="cover-container">
-            <img src="public/covers/system-design.jpg" alt="System Design Cover">
-          </div>
-          <div class="book-info">
-            <h3 class="book-title">System Design & Cloud Storage</h3>
-            <span class="book-author">Cloud Infrastructure</span>
-            <span class="tag">Architecture</span>
-          </div>
-        </a>
-
-      </div>
-    </section>
-
+  <main>
+    <div id="catalog" class="catalog-grid">
+      <div class="status-msg">Loading books from database...</div>
+    </div>
   </main>
 
+  <script>
+    const API_URL = 'https://b2-pdf-gateway.rco-architect.workers.dev/api/books';
+
+    async function loadCatalog() {
+      const catalogElement = document.getElementById('catalog');
+
+      try {
+        const response = await fetch(API_URL);
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const books = await response.json();
+
+        if (!Array.isArray(books) || books.length === 0) {
+          catalogElement.innerHTML = '<div class="status-msg">No books currently available in the database.</div>';
+          return;
+        }
+
+        catalogElement.innerHTML = '';
+
+        books.forEach(book => {
+          const card = document.createElement('div');
+          card.className = 'book-card';
+          
+          // Redirect to reader page passing the b2_key parameter
+          card.onclick = () => {
+            window.location.href = `src/pages/reader?book=${encodeURIComponent(book.b2_key)}`;
+          };
+
+          card.innerHTML = `
+            <div class="cover-container">
+              <img src="${book.cover_url}" alt="${book.title}" loading="lazy" onerror="this.src='https://via.placeholder.com/200x280?text=No+Cover'">
+            </div>
+            <div class="book-info">
+              <h3>${book.title}</h3>
+              <p>By ${book.author}</p>
+            </div>
+          `;
+
+          catalogElement.appendChild(card);
+        });
+
+      } catch (err) {
+        console.error('Failed to fetch database records:', err);
+        catalogElement.innerHTML = `
+          <div class="status-msg error-msg">
+            Failed to load library catalog.<br>
+            <small style="color: #94a3b8; font-size: 0.85rem;">Ensure Cloudflare D1 binding "DB" is attached to the Worker.</small>
+          </div>
+        `;
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', loadCatalog);
+  </script>
 </body>
 </html>
