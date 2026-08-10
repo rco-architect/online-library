@@ -23,11 +23,13 @@ CREATE TABLE books (
 INSERT INTO categories (id, name) VALUES
 ('software_engineering', 'Software Engineering'),
 ('computer_science', 'Computer Science'),
-('artificial_intelligence', 'Artificial Intelligence',algorithms'),
+('artificial_intelligence', 'Artificial Intelligence'),
 ('data_science', 'Data Science'),
+('algorithms', 'Algorithms'),
 ('web_development', 'Web Development');
 
 -- Seed Books
 INSERT INTO books (id, title, author, cover_url, b2_key, category_id) VALUES
-('clean_code', 'Clean Code', 'Robert C. Martin', 'https://via.placeholder.com/150', 'clean_code', 'software_engineering'),
-('pragmatic_programmer', 'The Pragmatic Programmer', 'Andrew Hunt', 'https://via.placeholder.com/150', 'pragmatic_programmer', 'software_engineering');
+-- ('clean_code', 'Clean Code', 'Robert C. Martin', 'https://via.placeholder.com/150', 'clean_code', 'software_engineering'),
+('clean_code', 'Clean Code', 'Robert C. Martin', 'https://covers.openlibrary.org/b/isbn/0132350882-L.jpg', 'clean_code', 'software_engineering'),
+('pragmatic_programmer', 'The Pragmatic Programmer', 'Andrew Hunt', 'https://covers.openlibrary.org/b/isbn/0135957052-L.jpg', 'the-pragmatic-programmer', 'software_engineering');
